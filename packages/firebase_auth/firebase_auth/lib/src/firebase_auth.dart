@@ -149,6 +149,13 @@ class FirebaseAuth extends FirebasePluginPlatform {
     return _delegate.checkActionCode(code);
   }
 
+  Future<UserCredential> signInWithMicrosoft() async {
+    return UserCredential._(
+      this,
+      await _delegate.signInWithMicrosoft(),
+    );
+  }
+
   /// Completes the password reset process, given a confirmation code and new
   /// password.
   ///

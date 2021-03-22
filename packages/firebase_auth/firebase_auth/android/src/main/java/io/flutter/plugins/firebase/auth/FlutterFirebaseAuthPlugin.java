@@ -38,6 +38,7 @@ import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
+import com.google.firebase.auth.OAuthProvider;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.auth.TwitterAuthProvider;
@@ -956,6 +957,33 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
+private Task<Void>  handleSignInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
+    System.out.println("Print>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALL CAME");
+     return Tasks.call(
+        cachedThreadPool,
+        () -> {
+          final OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
+
+
+    Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
+    if (pendingResultTask != null) {
+       AuthResult authResult =
+              Tasks.await(pendingResultTask
+              .addOnCompleteListener(new SignInCompleteListener(result)));
+              return parseAuthResult(authResult);
+      
+    } else {
+       AuthResult authResult =
+              Tasks.await(firebaseAuth
+              .startActivityForSignInWithProvider(registrar.activity(), provider.build())
+              .addOnCompleteListener(new SignInCompleteListener(result)));
+              return parseAuthResult(authResult);
+   
+    }
+
+    
+  }
+
 
   private Task<Map<String, Object>> reauthenticateUserWithCredential(
       Map<String, Object> arguments) {
@@ -1249,6 +1277,9 @@ public class FlutterFirebaseAuthPlugin
         break;
       case "User#updateProfile":
         methodCallTask = updateProfile(call.arguments());
+        break;
+      case "Auth#signInWithMicrosoft":
+        methodCallTask = handleSignInWithMicrosoft(call, result, getAuth(call));
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
