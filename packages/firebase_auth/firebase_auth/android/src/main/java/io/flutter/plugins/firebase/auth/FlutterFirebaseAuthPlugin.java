@@ -957,7 +957,7 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-private Task<Void>  handleSignInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
+private Task<Void>  signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
     
      return Tasks.call(
         cachedThreadPool,
@@ -1280,7 +1280,7 @@ private Task<Void>  handleSignInWithMicrosoft(MethodCall call, Result result, Fi
         methodCallTask = updateProfile(call.arguments());
         break;
       case "Auth#signInWithMicrosoft":
-        methodCallTask = handleSignInWithMicrosoft(call, result, getAuth(call));
+        methodCallTask = signInWithMicrosoft(call, result, getAuth(call));
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
