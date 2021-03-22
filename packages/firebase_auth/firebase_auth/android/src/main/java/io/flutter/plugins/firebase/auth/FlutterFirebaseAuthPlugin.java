@@ -957,7 +957,7 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-private Task<Void>  signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
+private Task<Map<String, Object>>  signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
     
      return Tasks.call(
         cachedThreadPool,

@@ -427,6 +427,10 @@ abstract class FirebaseAuthPlatform extends PlatformInterface {
     throw UnimplementedError('signInWithCredential() is not implemented');
   }
 
+  Future<UserCredentialPlatform> signInWithMicrosoft() async {
+    throw UnimplementedError('signInWithMicrosoft() is not implemented');
+  }
+
   /// Tries to sign in a user with a given Custom Token [token].
   ///
   /// If successful, it also signs the user in into the app and updates

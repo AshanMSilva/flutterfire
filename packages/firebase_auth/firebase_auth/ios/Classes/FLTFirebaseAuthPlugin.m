@@ -453,7 +453,7 @@ BOOL static initialAuthState = true;
                     }
                   }];
 }
--(void)signInWithMicrosoft:(id)arguments
+-(void)signInWithMicrosoft:()arguments
         withMethodCallResult:(FLTFirebaseMethodCallResult *)result {
       FIROAuthProvider *provider = [FIROAuthProvider providerWithProviderID:@"microsoft.com"];
        [provider setCustomParameters:@{@"prompt": @"select_account", @"tenant":  @"852c5799-8134-4f15-9d38-eba4296cc76f"}];
