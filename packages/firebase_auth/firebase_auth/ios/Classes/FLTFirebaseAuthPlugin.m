@@ -453,6 +453,29 @@ BOOL static initialAuthState = true;
                     }
                   }];
 }
+-(void)signInWithMicrosoft:(id)arguments
+        withMethodCallResult:(FLTFirebaseMethodCallResult *)result {
+      FIROAuthProvider *provider = [FIROAuthProvider providerWithProviderID:@"microsoft.com"];
+       [provider setCustomParameters:@{@"prompt": @"select_account", @"tenant":  @"852c5799-8134-4f15-9d38-eba4296cc76f"}];
+    FIRAuth *auth = [self getFIRAuthFromArguments:arguments];
+  FIRAuthCredential *credential = [provider getCredentialWithUIDelegate:nil];
+
+  if (credential == nil) {
+    result.error(kErrCodeInvalidCredential, kErrMsgInvalidCredential, nil, nil);
+    return;
+  }
+
+  [auth signInWithCredential:credential
+                  completion:^(FIRAuthDataResult *authResult, NSError *error) {
+                    if (error != nil) {
+                      result.error(nil, nil, nil, error);
+                    } else {
+                      result.success(authResult);
+                    }
+                  }];
+    
+      
+  }
 
 - (void)setLanguageCode:(id)arguments withMethodCallResult:(FLTFirebaseMethodCallResult *)result {
   FIRAuth *auth = [self getFIRAuthFromArguments:arguments];
