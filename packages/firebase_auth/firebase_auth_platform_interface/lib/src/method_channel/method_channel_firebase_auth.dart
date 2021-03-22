@@ -481,6 +481,25 @@ class MethodChannelFirebaseAuth extends FirebaseAuthPlatform {
   }
 
   @override
+  Future<UserCredentialPlatform> signInWithMicrosoft() async {
+    try {
+      Map<String, dynamic> data = (await channel
+          .invokeMapMethod<String, dynamic>(
+              'Auth#signInWithCredential', <String, dynamic>{
+        'appName': app.name,
+      }))!;
+
+      MethodChannelUserCredential userCredential =
+          MethodChannelUserCredential(this, data);
+
+      currentUser = userCredential.user;
+      return userCredential;
+    } catch (e) {
+      throw convertPlatformException(e);
+    }
+  }
+
+  @override
   Future<UserCredentialPlatform> signInWithCustomToken(String token) async {
     try {
       Map<String, dynamic> data = (await channel
