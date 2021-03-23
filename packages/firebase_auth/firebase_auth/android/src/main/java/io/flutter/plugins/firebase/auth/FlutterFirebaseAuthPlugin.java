@@ -964,8 +964,8 @@ public class FlutterFirebaseAuthPlugin
     SignInCompleteListener(Result result) {
       this.result = result;
     }
-    public abstract void onComplete (Task<ResultT> task){
-      
+    public void onComplete (Task<ResultT> task){
+
     }
   }
  private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
