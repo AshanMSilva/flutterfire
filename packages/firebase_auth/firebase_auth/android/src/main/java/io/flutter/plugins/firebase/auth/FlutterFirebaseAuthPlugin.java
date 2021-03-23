@@ -982,7 +982,7 @@ public class FlutterFirebaseAuthPlugin
                 exception != null ? exception.getMessage() : null,
                 getExceptionDetails(exception));
           }
-        });
+        }));
               return parseAuthResult(authResult);
       
     } else {
