@@ -958,11 +958,14 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-  private class SignInCompleteListener extends OnCompleteListener<AuthResult> {
+  private class SignInCompleteListener implements OnCompleteListener<AuthResult> {
     private final Result result;
 
     SignInCompleteListener(Result result) {
       this.result = result;
+    }
+    public abstract void onComplete (Task<ResultT> task){
+      
     }
   }
  private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
