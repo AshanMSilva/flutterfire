@@ -972,14 +972,14 @@ public class FlutterFirebaseAuthPlugin
     if (pendingResultTask != null) {
        AuthResult authResult =
               Tasks.await(pendingResultTask
-              .addOnCompleteListener(OnCompleteListener<AuthResult>));
+              .addOnCompleteListener(OnCompleteListener<AuthResult> listener));
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build())
-              .addOnCompleteListener(OnCompleteListener<AuthResult>));
+              .addOnCompleteListener(OnCompleteListener<AuthResult> listener));
               return parseAuthResult(authResult);
    
     }
