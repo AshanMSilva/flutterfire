@@ -960,7 +960,7 @@ public class FlutterFirebaseAuthPlugin
   }
   
  private Task<Map<String, Object>> signInWithMicrosoft(Map<String, Object> arguments) {
-    System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<signInWithMicrosoft>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+    System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<signInWithMicrosoft>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
      return Tasks.call(
         cachedThreadPool,
         () -> {
