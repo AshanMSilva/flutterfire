@@ -958,6 +958,13 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
+  private class SignInCompleteListener implements OnCompleteListener<AuthResult> {
+    private final Result result;
+
+    SignInCompleteListener(Result result) {
+      this.result = result;
+    }
+  }
  private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
     
      return Tasks.call(
@@ -971,14 +978,14 @@ public class FlutterFirebaseAuthPlugin
     if (pendingResultTask != null) {
        AuthResult authResult =
               Tasks.await(pendingResultTask
-              .addOnCompleteListener(OnCompleteListener(result)));
+              .addOnCompleteListener(new SignInCompleteListener(result)));
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build())
-              .addOnCompleteListener(OnCompleteListener(result)));
+              .addOnCompleteListener(new SignInCompleteListener(result)));
               return parseAuthResult(authResult);
    
     }
