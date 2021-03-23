@@ -972,34 +972,14 @@ public class FlutterFirebaseAuthPlugin
     if (pendingResultTask != null) {
        AuthResult authResult =
               Tasks.await(pendingResultTask
-              .addOnCompleteListener( task -> {
-          if (task.isSuccessful()) {
-            result.success(task.getResult());
-          } else {
-            Exception exception = task.getException();
-            result.error(
-                "firebase_auth",
-                exception != null ? exception.getMessage() : null,
-                getExceptionDetails(exception));
-          }
-        }));
+              .addOnCompleteListener());
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build())
-              .addOnCompleteListener( task -> {
-          if (task.isSuccessful()) {
-            result.success(task.getResult());
-          } else {
-            Exception exception = task.getException();
-            result.error(
-                "firebase_auth",
-                exception != null ? exception.getMessage() : null,
-                getExceptionDetails(exception));
-          }
-        }));
+              .addOnCompleteListener());
               return parseAuthResult(authResult);
    
     }
