@@ -964,7 +964,7 @@ public class FlutterFirebaseAuthPlugin
     SignInCompleteListener(Result result) {
       this.result = result;
     }
-    public void onComplete (Task<ResultT> task){
+    public void onComplete (Task<Result> task){
 
     }
   }
