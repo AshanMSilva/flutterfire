@@ -958,16 +958,7 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-  private class SignInCompleteListener implements OnCompleteListener<AuthResult> {
-    private final Result result;
-
-    SignInCompleteListener(Result result) {
-      this.result = result;
-    }
-    public void onComplete (Task<TResult> task){
-
-    }
-  }
+  
  private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
     
      return Tasks.call(
@@ -981,14 +972,34 @@ public class FlutterFirebaseAuthPlugin
     if (pendingResultTask != null) {
        AuthResult authResult =
               Tasks.await(pendingResultTask
-              .addOnCompleteListener(new SignInCompleteListener(result)));
+              .addOnCompleteListener( task -> {
+          if (task.isSuccessful()) {
+            result.success(task.getResult());
+          } else {
+            Exception exception = task.getException();
+            result.error(
+                "firebase_auth",
+                exception != null ? exception.getMessage() : null,
+                getExceptionDetails(exception));
+          }
+        });
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build())
-              .addOnCompleteListener(new SignInCompleteListener(result)));
+              .addOnCompleteListener( task -> {
+          if (task.isSuccessful()) {
+            result.success(task.getResult());
+          } else {
+            Exception exception = task.getException();
+            result.error(
+                "firebase_auth",
+                exception != null ? exception.getMessage() : null,
+                getExceptionDetails(exception));
+          }
+        }));
               return parseAuthResult(authResult);
    
     }
