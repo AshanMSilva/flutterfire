@@ -62,6 +62,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
+import com.google.android.gms.tasks.SignInCompleteListener;
 
 /** Flutter plugin for Firebase Auth. */
 public class FlutterFirebaseAuthPlugin
@@ -1282,7 +1283,7 @@ public class FlutterFirebaseAuthPlugin
         methodCallTask = updateProfile(call.arguments());
         break;
       case "Auth#signInWithMicrosoft":
-        methodCallTask = signInWithMicrosoft(call, result, getAuth(call));
+        methodCallTask = signInWithMicrosoft(call, result, getAuth(callarguments()));
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
