@@ -959,11 +959,12 @@ public class FlutterFirebaseAuthPlugin
         });
   }
   
- private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
-    
+ private Task<Map<String, Object>> signInWithMicrosoft(Map<String, Object> arguments) {
+    print("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<signInWithMicrosoft>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
      return Tasks.call(
         cachedThreadPool,
         () -> {
+          FirebaseAuth firebaseAuth = getAuth(arguments);
           final OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
           provider.addCustomParameter("prompt", "select_account");
           provider.addCustomParameter("tenant", "852c5799-8134-4f15-9d38-eba4296cc76f");
@@ -972,14 +973,14 @@ public class FlutterFirebaseAuthPlugin
     if (pendingResultTask != null) {
        AuthResult authResult =
               Tasks.await(pendingResultTask
-              .addOnCompleteListener(OnCompleteListener listener));
+              );
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build())
-              .addOnCompleteListener(OnCompleteListener listener));
+              );
               return parseAuthResult(authResult);
    
     }
@@ -1284,7 +1285,7 @@ public class FlutterFirebaseAuthPlugin
         methodCallTask = updateProfile(call.arguments());
         break;
       case "Auth#signInWithMicrosoft":
-        methodCallTask = signInWithMicrosoft(call, result, getAuth(call.arguments()));
+        methodCallTask = signInWithMicrosoft(call.arguments());
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
