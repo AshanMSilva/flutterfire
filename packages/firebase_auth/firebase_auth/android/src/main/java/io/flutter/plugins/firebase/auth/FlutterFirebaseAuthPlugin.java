@@ -968,14 +968,21 @@ public class FlutterFirebaseAuthPlugin
           provider.addCustomParameter("prompt", "select_account");
           provider.addCustomParameter("tenant", "852c5799-8134-4f15-9d38-eba4296cc76f");
 
-    
+    Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
+    if (pendingResultTask != null) {
+       AuthResult authResult =
+              Tasks.await(pendingResultTask
+              .addOnCompleteListener(OnCompleteListener<AuthResult>));
+              return parseAuthResult(authResult);
+      
+    } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
-              .startActivityForSignInWithProvider(getActivity(), provider.build()));
-              
+              .startActivityForSignInWithProvider(getActivity(), provider.build())
+              .addOnCompleteListener(OnCompleteListener<AuthResult>));
               return parseAuthResult(authResult);
    
-    
+    }
    
      });
 
