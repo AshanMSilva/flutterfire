@@ -958,7 +958,7 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-  private class SignInCompleteListener implements OnCompleteListener<AuthResult> {
+  private class SignInCompleteListener extends OnCompleteListener<AuthResult> {
     private final Result result;
 
     SignInCompleteListener(Result result) {
