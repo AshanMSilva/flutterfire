@@ -957,7 +957,7 @@ public class FlutterFirebaseAuthPlugin
           return parseAuthResult(authResult);
         });
   }
-private Task<Map<String, Object>>  signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
+  private Task<Map<String, Object>> signInWithMicrosoft(MethodCall call, Result result, FirebaseAuth firebaseAuth) {
     
      return Tasks.call(
         cachedThreadPool,
@@ -976,16 +976,17 @@ private Task<Map<String, Object>>  signInWithMicrosoft(MethodCall call, Result r
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
-              .startActivityForSignInWithProvider(registrar.activity(), provider.build())
+              .startActivityForSignInWithProvider(getActivity(), provider.build())
               .addOnCompleteListener(new SignInCompleteListener(result)));
               return parseAuthResult(authResult);
    
     }
+    return null;
      });
 
     
   }
-
+    
 
   private Task<Map<String, Object>> reauthenticateUserWithCredential(
       Map<String, Object> arguments) {
