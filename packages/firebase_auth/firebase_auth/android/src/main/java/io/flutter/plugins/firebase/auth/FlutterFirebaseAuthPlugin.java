@@ -972,14 +972,52 @@ public class FlutterFirebaseAuthPlugin
     Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
     if (pendingResultTask != null) {
        AuthResult authResult =
-              Tasks.await(pendingResultTask
+              Tasks.await(pendingResultTask.addOnSuccessListener(
+                        new OnSuccessListener<AuthResult>() {
+                            @Override
+                            public void onSuccess(AuthResult authResult) {
+                                Log.e(TAG,"Pending Success");
+                                // User is signed in.
+                                // IdP data available in
+                                // authResult.getAdditionalUserInfo().getProfile().
+                                // The OAuth access token can also be retrieved:
+                                // authResult.getCredential().getAccessToken().
+                            }
+                        })
+                .addOnFailureListener(
+                        new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.e(TAG,"Pending Failed: "+e.getMessage());
+                                // Handle failure.
+                            }
+                        })
               );
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
-              .startActivityForSignInWithProvider(getActivity(), provider.build())
+              .startActivityForSignInWithProvider(getActivity(), provider.build()).addOnSuccessListener(
+                    new OnSuccessListener<AuthResult>() {
+                        @Override
+                        public void onSuccess(AuthResult authResult) {
+                            Log.e(TAG,"Auth Success");
+                            // User is signed in.
+                            // IdP data available in
+                            // authResult.getAdditionalUserInfo().getProfile().
+                            // The OAuth access token can also be retrieved:
+                            // authResult.getCredential().getAccessToken().
+                        }
+                    })
+            .addOnFailureListener(
+                    new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e(TAG,"Auth Failed: "+e.getMessage() + "\nTrace: "+ e.getClass().getCanonicalName());
+                            // Handle failure.
+                        }
+                    })
               );
               return parseAuthResult(authResult);
    
