@@ -1285,7 +1285,9 @@ public class FlutterFirebaseAuthPlugin
         methodCallTask = updateProfile(call.arguments());
         break;
       case "Auth#signInWithMicrosoft":
+        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<Asasadadad>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
         methodCallTask = signInWithMicrosoft(call.arguments());
+        System.out.println(methodCallTask);
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
