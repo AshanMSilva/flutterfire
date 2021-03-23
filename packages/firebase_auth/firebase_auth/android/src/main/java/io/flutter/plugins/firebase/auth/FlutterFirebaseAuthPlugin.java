@@ -1003,7 +1003,7 @@ public class FlutterFirebaseAuthPlugin
               return parseAuthResult(authResult);
    
     }
-    return null;
+   
      });
 
     
