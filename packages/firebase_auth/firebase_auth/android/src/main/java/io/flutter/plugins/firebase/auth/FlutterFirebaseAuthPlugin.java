@@ -981,6 +981,7 @@ private Task<Map<String, Object>>  signInWithMicrosoft(MethodCall call, Result r
               return parseAuthResult(authResult);
    
     }
+     });
 
     
   }
