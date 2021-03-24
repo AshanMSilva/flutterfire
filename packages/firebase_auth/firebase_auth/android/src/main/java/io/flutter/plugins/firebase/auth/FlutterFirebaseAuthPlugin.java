@@ -965,60 +965,22 @@ public class FlutterFirebaseAuthPlugin
         cachedThreadPool,
         () -> {
           FirebaseAuth firebaseAuth = getAuth(arguments);
-          final OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com");
+          final OAuthProvider.Builder provider = OAuthProvider.newBuilder("microsoft.com", firebaseAuth);
           provider.addCustomParameter("prompt", "select_account");
           provider.addCustomParameter("tenant", "852c5799-8134-4f15-9d38-eba4296cc76f");
 
     Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
     if (pendingResultTask != null) {
        AuthResult authResult =
-              Tasks.await(pendingResultTask.addOnSuccessListener(
-                        new OnSuccessListener<AuthResult>() {
-                            @Override
-                            public void onSuccess(AuthResult authResult) {
-                                Log.e(TAG,"Pending Success");
-                                // User is signed in.
-                                // IdP data available in
-                                // authResult.getAdditionalUserInfo().getProfile().
-                                // The OAuth access token can also be retrieved:
-                                // authResult.getCredential().getAccessToken().
-                            }
-                        })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Log.e(TAG,"Pending Failed: "+e.getMessage());
-                                // Handle failure.
-                            }
-                        })
-              );
+              Tasks.await(pendingResultTask);
+                
+              
               return parseAuthResult(authResult);
       
     } else {
        AuthResult authResult =
               Tasks.await(firebaseAuth
-              .startActivityForSignInWithProvider(getActivity(), provider.build()).addOnSuccessListener(
-                    new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            Log.e(TAG,"Auth Success");
-                            // User is signed in.
-                            // IdP data available in
-                            // authResult.getAdditionalUserInfo().getProfile().
-                            // The OAuth access token can also be retrieved:
-                            // authResult.getCredential().getAccessToken().
-                        }
-                    })
-            .addOnFailureListener(
-                    new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e(TAG,"Auth Failed: "+e.getMessage() + "\nTrace: "+ e.getClass().getCanonicalName());
-                            // Handle failure.
-                        }
-                    })
-              );
+              .startActivityForSignInWithProvider(getActivity(), provider.build()));
               return parseAuthResult(authResult);
    
     }
