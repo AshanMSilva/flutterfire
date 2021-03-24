@@ -960,7 +960,7 @@ public class FlutterFirebaseAuthPlugin
   }
   
  private Task<Map<String, Object>> signInWithMicrosoft(Map<String, Object> arguments) {
-    System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<signInWithMicrosoft>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+    
      return Tasks.call(
         cachedThreadPool,
         () -> {
@@ -971,16 +971,19 @@ public class FlutterFirebaseAuthPlugin
 
     Task<AuthResult> pendingResultTask = firebaseAuth.getPendingAuthResult();
     if (pendingResultTask != null) {
+       Log.e("Ther is a pending result");
        AuthResult authResult =
               Tasks.await(pendingResultTask);
-                
+               Log.e(authResult); 
               
               return parseAuthResult(authResult);
       
     } else {
+      Log.e("No pending result");
        AuthResult authResult =
               Tasks.await(firebaseAuth
               .startActivityForSignInWithProvider(getActivity(), provider.build()));
+            Log.e(authResult);
               return parseAuthResult(authResult);
    
     }
@@ -1285,9 +1288,9 @@ public class FlutterFirebaseAuthPlugin
         methodCallTask = updateProfile(call.arguments());
         break;
       case "Auth#signInWithMicrosoft":
-        System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<Asasadadad>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+        Log.e("case sign in with microsoft");
         methodCallTask = signInWithMicrosoft(call.arguments());
-        System.out.println(methodCallTask);
+        Log.e(methodCallTask);
         break;
       case "User#verifyBeforeUpdateEmail":
         methodCallTask = verifyBeforeUpdateEmail(call.arguments());
